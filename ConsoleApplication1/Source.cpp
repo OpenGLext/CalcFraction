@@ -47,7 +47,7 @@ drobsObZnamenatel drobsWithObZnamenatel;
 	int chisl;
 	int znamenatel;
 };
-
+//test
 SmDrob smDrobA;
 // наименьший общий делитель
 int NOD(int a, int b) 
