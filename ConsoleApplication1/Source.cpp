@@ -172,10 +172,14 @@ void NonNormalDrobInSmechannuy(drob resultDrob)
 	smDrobA.znamenatel = resultDrob.znamenatel;
 }
 //сократим дробь
-void SokrDrob(SmDrob smDrobA)
+drob SokrDrob(SmDrob a)
 {
-   resultDrob.chisl =	(NOD(smDrobA.chisl, smDrobA.znamenatel)) / smDrobA.chisl;
-   resultDrob.znamenatel = (NOD(smDrobA.chisl, smDrobA.znamenatel)) % smDrobA.znamenatel;
+   drob res;
+
+   res.chisl =	a.chisl / (NOD(a.chisl, a.znamenatel)) ;
+   res.znamenatel = a.znamenatel /(NOD(a.chisl, a.znamenatel)) ;
+   
+   return res;
 }
 // можно ли дробь сократить
 bool CheckSokrDrob(SmDrob smDrobA)
@@ -274,34 +278,10 @@ void InitDecDrob(DecDrob a)
 //преобразуем целочисленную дробь < 0  0.025
 SmDrob TransformDecDrobMinZero(DecDrob a)
 {
-	
-
-	//if ((float)((int)a.zelview) == a.zelview) //Целое
-	//{
-	//	sm.chisl = a.zelview;
-	//	
-	//}
-	//else
-	//{
-
 	SmDrob sm;
 	int calcbits = 0;
 
 	sm.znamenatel = 1;
-
-		/*do
-		{
-            calcbits++;
-			a.zelview = a.zelview * 10;
-		} while (((float)((int)a.zelview) != a.zelview));*/
-
-	/*while (((float)((int)a.zelview) != a.zelview))
-	{
-		if (((float)((int)a.zelview) == a.zelview)) break;
-
-		calcbits++;
-		a.zelview = a.zelview * 10;
-	}*/
 
 	while (floor(a.zelview) != a.zelview)
 	{
@@ -312,7 +292,6 @@ SmDrob TransformDecDrobMinZero(DecDrob a)
 	         sm.chisl = a.zelview;
 		sm.znamenatel = sm.znamenatel * pow(10, calcbits);
 		return sm;
-	
 }
 // преобразуем целочисленную дробь > 0 2.25
 void TransformDecDrobBigZero(DecDrob a)
@@ -368,8 +347,8 @@ void main()
 		{
 			std::cout << "Можно сократить (НОД != 1),сокращаю...\n" << endl;
 			std::wcout << "NOD = " << NOD(smDrobA.chisl, smDrobA.znamenatel) <<"\n"<< endl;
-			SokrDrob(smDrobA);
-			ShowDrob(smDrobA);
+			resultDrob = SokrDrob(smDrobA);
+			ShowDrob(resultDrob);
 		}
 		else std::cout << "Дробь нельзя сократить т.к НОД дроби = 1...\n" << endl;
 		std::cin >> decDrobA.zelview;
