@@ -1,0 +1,7 @@
+﻿  Source.cpp
+d:\users\олег\documents\visual studio 2015\projects\consoleapplication1\consoleapplication1\source.cpp(312): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+d:\users\олег\documents\visual studio 2015\projects\consoleapplication1\consoleapplication1\source.cpp(313): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+d:\users\олег\documents\visual studio 2015\projects\consoleapplication1\consoleapplication1\source.cpp(90): warning C4715: 'CheckNormalDrob': not all control paths return a value
+d:\users\олег\documents\visual studio 2015\projects\consoleapplication1\consoleapplication1\source.cpp(96): warning C4715: 'CheckDrobONZero': not all control paths return a value
+  ConsoleApplication1.vcxproj -> D:\Users\Олег\documents\visual studio 2015\Projects\ConsoleApplication1\Debug\ConsoleApplication1.exe
+  ConsoleApplication1.vcxproj -> D:\Users\Олег\documents\visual studio 2015\Projects\ConsoleApplication1\Debug\ConsoleApplication1.pdb (Full PDB)
