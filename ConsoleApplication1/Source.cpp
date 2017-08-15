@@ -109,14 +109,14 @@ void ShowDrob(drob a)
 //выведем на экран дробь в виде целая часть + дробь
 void ShowDrob(SmDrob smDrobA)
 {
-	if (smDrobA.Natur >= 1)
-	{
+//	if (smDrobA.Natur >= 1)
+	//{
 		std::cout << "  " << smDrobA.chisl << "\n" << smDrobA.Natur << "---" << "\n" << " " << smDrobA.znamenatel << "\n" << endl;
 		std::cout << "" << endl;
-	}
-	else
-		std::cout << "  " << smDrobA.chisl << "\n" << "---" << "\n" << " " << smDrobA.znamenatel << "\n" << endl;
-	    std::cout << "" << endl;
+	//}
+	//else
+	//	std::cout << "  " << smDrobA.chisl << "\n" << "---" << "\n" << " " << smDrobA.znamenatel << "\n" << endl;
+	//    std::cout << "" << endl;
 }
 //вывод целочисленной дроби на экран
 void ShowDrob(DecDrob a)
@@ -294,9 +294,19 @@ SmDrob TransformDecDrobMinZero(DecDrob a)
 		return sm;
 }
 // преобразуем целочисленную дробь > 0 2.25
-void TransformDecDrobBigZero(DecDrob a)
+SmDrob TransformDecDrobBigZero(DecDrob a)
 {
-
+	SmDrob sm;
+	//отделить целую часть round(a.zelview) а дробную так же преобразовать как в TransformDecDrobMinZero
+	sm.Natur = round(a.zelview);
+		a.zelview =  abs(a.zelview - (round(a.zelview)));
+	sm = TransformDecDrobMinZero(a);
+	return sm;
+}
+// проверим десятичная дробь (> 0) or (< 0)   true = > 0 
+bool CheckDecDrobBigZeroIs(DecDrob a)
+{
+	 return ((round(a.zelview)));
 }
 void main() 
 {
@@ -321,27 +331,36 @@ void main()
 
 	if (formatDrobs == 1)
 	{
-		//std::cout << "Ввод десятичной дроби 2,3 через (.) две дроби через пробел " << "\n" <<
-		//	"Выбор операции над дробями [1] - [2] + [3] * [4] / "<<"\n"<< endl;
-		//std::cin >> decDrobA.zelview>>decDrobB.zelview>>operation;
-		////иниц числ и знаменатель дабы перевести в норм или смещ дробь
-		//InitDecDrob(decDrobA); InitDecDrob(decDrobB);
-		//switch (operation)
-		//{
-		//
-		//case 2: otvetDecDrob = SummaDecDrobs(decDrobA, decDrobB);  std::cin >> operation; break;
-		//case 1: break;
-		//case 3: break;
-		//case 4: break;
-		//case 0: exit; break;
-		//default: exit; break;
-		//}
+	//	//std::cout << "Ввод десятичной дроби 2,3 через (.) две дроби через пробел " << "\n" <<
+	//	//	"Выбор операции над дробями [1] - [2] + [3] * [4] / "<<"\n"<< endl;
+	//	//std::cin >> decDrobA.zelview>>decDrobB.zelview>>operation;
+	//	////иниц числ и знаменатель дабы перевести в норм или смещ дробь
+	//	//InitDecDrob(decDrobA); InitDecDrob(decDrobB);
+	//	//switch (operation)
+	//	//{
+	//	//
+	//	//case 2: otvetDecDrob = SummaDecDrobs(decDrobA, decDrobB);  std::cin >> operation; break;
+	//	//case 1: break;
+	//	//case 3: break;
+	//	//case 4: break;
+	//	//case 0: exit; break;
+	//	//default: exit; break;
+	//	//}
 
-		//тест преобразования десят дроби < 0 0.025
-		std::cout << "Ввод десятичной дроби МЕНЬШЕ 0 (0.025) через (.) для преобразования в нормальную дробь " << "\n" << endl;
+	//	//тест преобразования десят дроби < 0 0.025
+		std::cout << "Ввод десятичной дроби  через(.) для преобразования в нормальную дробь " << "\n" << endl;
+		//"Ввод десятичной дроби МЕНЬШЕ 0 (0.025) через (.) для преобразования в нормальную дробь " << "\n" << endl;
 		std::cin >> decDrobA.zelview;
+		// проверка дроби > 0 ?
+		if (CheckDecDrobBigZeroIs(decDrobA))
+		{
+			TransformDecDrobBigZero(decDrobA); // Да
+			//ShowDrob(decDrobA);
+			//std::cin >> drobA.digitDrob;
+		}
+		else
 		std::cout << " \n";
-		smDrobA = TransformDecDrobMinZero(decDrobA);
+		smDrobA = TransformDecDrobMinZero(decDrobA); // Нет
 		ShowDrob(smDrobA);
 		if (CheckSokrDrob(smDrobA))
 		{
@@ -354,17 +373,17 @@ void main()
 		std::cin >> decDrobA.zelview;
 	}
 
-	if (formatDrobs == 2)
-	{
-		
+	//if (formatDrobs == 2)
+	//{
+	//	
 
 
-	}
+	//}
 
-	if (formatDrobs == 3)
-	{
+	//if (formatDrobs == 3)
+	//{
 
-	}
+	//}
 
 	//std::cin >> inputDrob;
 	//ParseInputDrob();
@@ -373,8 +392,8 @@ void main()
 
 	//if (drobA.znamenatel == )
 
-	/*std::cin >> drobA.chisl>>drobA.znamenatel;
-	std::cin >> drobB.chisl >> drobB.znamenatel;*/
+	std::cin >> drobA.chisl>>drobA.znamenatel;
+	std::cin >> drobB.chisl >> drobB.znamenatel;
 
 	// debug input
 	//drobA.chisl = 2; drobA.znamenatel = 3; drobB.chisl = 4; drobB.znamenatel = 7;
@@ -505,8 +524,9 @@ void main()
 	//			if (CheckSokrDrob(drobA))
 	//			{
 	//				std::cout << "Можно сократить,сокращаю...\n" << endl;
-	//				drobA.chisl = (NOD(drobA.chisl, drobA.znamenatel)) / drobA.chisl;
-	//				drobA.znamenatel = (NOD(drobA.chisl,drobA.znamenatel)) / drobA.znamenatel;
+	//			/*	drobA.chisl = (NOD(drobA.chisl, drobA.znamenatel)) / drobA.chisl;
+	//				drobA.znamenatel = (NOD(drobA.chisl,drobA.znamenatel)) / drobA.znamenatel;*/
+	//				SokrDrob(drobA);
 	//			}
 	//			ShowDrob(drobA);
 	//			std::cin >> a;

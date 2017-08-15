@@ -1,6 +1,8 @@
 ﻿  Source.cpp
 e:\local github\calcfraction\consoleapplication1\source.cpp(292): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
 e:\local github\calcfraction\consoleapplication1\source.cpp(293): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+e:\local github\calcfraction\consoleapplication1\source.cpp(301): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+e:\local github\calcfraction\consoleapplication1\source.cpp(309): warning C4800: 'float': forcing value to bool 'true' or 'false' (performance warning)
 e:\local github\calcfraction\consoleapplication1\source.cpp(90): warning C4715: 'CheckNormalDrob': not all control paths return a value
 e:\local github\calcfraction\consoleapplication1\source.cpp(96): warning C4715: 'CheckDrobONZero': not all control paths return a value
   ConsoleApplication1.vcxproj -> E:\Local GitHub\CalcFraction\ConsoleApplication1\Debug\ConsoleApplication1.exe
