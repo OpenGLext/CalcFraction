@@ -1,9 +1,14 @@
 ﻿  Source.cpp
-e:\local github\calcfraction\consoleapplication1\source.cpp(292): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-e:\local github\calcfraction\consoleapplication1\source.cpp(293): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-e:\local github\calcfraction\consoleapplication1\source.cpp(301): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-e:\local github\calcfraction\consoleapplication1\source.cpp(309): warning C4800: 'float': forcing value to bool 'true' or 'false' (performance warning)
+e:\local github\calcfraction\consoleapplication1\source.cpp(330): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+e:\local github\calcfraction\consoleapplication1\source.cpp(331): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+e:\local github\calcfraction\consoleapplication1\source.cpp(342): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+e:\local github\calcfraction\consoleapplication1\source.cpp(350): warning C4800: 'float': forcing value to bool 'true' or 'false' (performance warning)
+e:\local github\calcfraction\consoleapplication1\source.cpp(378): warning C4244: '=': conversion from 'long double' to 'int', possible loss of data
+e:\local github\calcfraction\consoleapplication1\source.cpp(391): warning C4244: '=': conversion from 'long double' to 'int', possible loss of data
 e:\local github\calcfraction\consoleapplication1\source.cpp(90): warning C4715: 'CheckNormalDrob': not all control paths return a value
 e:\local github\calcfraction\consoleapplication1\source.cpp(96): warning C4715: 'CheckDrobONZero': not all control paths return a value
+e:\local github\calcfraction\consoleapplication1\source.cpp(193): warning C4715: 'CheckNormalFraction': not all control paths return a value
+e:\local github\calcfraction\consoleapplication1\source.cpp(199): warning C4715: 'CheckNormalFraction': not all control paths return a value
+e:\local github\calcfraction\consoleapplication1\source.cpp(211): warning C4715: 'CheckNormalFraction': not all control paths return a value
   ConsoleApplication1.vcxproj -> E:\Local GitHub\CalcFraction\ConsoleApplication1\Debug\ConsoleApplication1.exe
   ConsoleApplication1.vcxproj -> E:\Local GitHub\CalcFraction\ConsoleApplication1\Debug\ConsoleApplication1.pdb (Full PDB)

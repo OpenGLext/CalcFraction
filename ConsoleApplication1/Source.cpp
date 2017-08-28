@@ -23,15 +23,15 @@ struct drob
 };
 struct DecDrob
 {
-	float chisl;       // 2,
-	float znamenatel; //  3
+	int chisl;       // 2,
+	int znamenatel; //  3
 	float zelview;    // 2,3
 	drob  DecInNormDrob; // 2 2/3
 };
 
 drob drobA,drobB, drobATemp, drobBTemp,smechannayDrob,resultDrob;
 DecDrob decDrobA,decDrobB,otvetDecDrob;
-std::string inputDrob;
+std::string inputDrob,resString;
 
 struct drobsObZnamenatel
 {
@@ -171,6 +171,44 @@ void NonNormalDrobInSmechannuy(drob resultDrob)
 	smDrobA.chisl = resultDrob.chisl % resultDrob.znamenatel;
 	smDrobA.znamenatel = resultDrob.znamenatel;
 }
+void NonNormalDrobInSmechannuy(DecDrob resultDrob)
+{
+	/*поделить числитель дроби на ее знаменатель;
+	остаток от деления записать в числитель знаменатель оставить прежним;
+	результат от деления записать в качестве целой части.*/
+
+	smechannayDrob.chisl = resultDrob.chisl / resultDrob.znamenatel;
+	smechannayDrob.znamenatel = resultDrob.znamenatel;
+
+	smDrobA.Natur = resultDrob.chisl / resultDrob.znamenatel;
+	smDrobA.chisl = resultDrob.chisl % resultDrob.znamenatel;
+	smDrobA.znamenatel = resultDrob.znamenatel;
+}
+//проверим дробь нормальная ? если да то тру
+bool CheckNormalFraction(drob a)
+{
+	if (a.chisl > a.znamenatel) return false;
+	if (a.chisl < a.znamenatel) return true;
+	
+}
+bool CheckNormalFraction(DecDrob a)
+{
+	if (a.chisl > a.znamenatel) return false;
+	if (a.chisl < a.znamenatel) return true;
+
+}
+bool CheckNormalFraction(SmDrob a)
+{
+	if (a.Natur == 0)
+	{
+      if (a.chisl > a.znamenatel) return false;
+	  if (a.chisl < a.znamenatel) return true;
+	}
+	if (a.Natur < 0) return false;
+	if (a.Natur > 0) return false;
+	
+
+}
 //сократим дробь
 drob SokrDrob(SmDrob a)
 {
@@ -297,16 +335,65 @@ SmDrob TransformDecDrobMinZero(DecDrob a)
 SmDrob TransformDecDrobBigZero(DecDrob a)
 {
 	SmDrob sm;
-	//отделить целую часть round(a.zelview) а дробную так же преобразовать как в TransformDecDrobMinZero
+	//отделить целую часть round(a.zelview) 
+
+	//а дробную так же 
+		
 	sm.Natur = round(a.zelview);
 		a.zelview =  abs(a.zelview - (round(a.zelview)));
-	sm = TransformDecDrobMinZero(a);
+	//sm = TransformDecDrobMinZero(a);
 	return sm;
 }
 // проверим десятичная дробь (> 0) or (< 0)   true = > 0 
 bool CheckDecDrobBigZeroIs(DecDrob a)
 {
 	 return ((round(a.zelview)));
+}
+void RazlojOnMnoj(int a)
+{
+	
+
+	int i = 2; int j = 0;
+	while (i*i <= a && j != 1)
+	{
+		if ((a%i) == 0) j = 1;
+		else i += 1;
+	}
+	if (j == 1) std::cout <<a <<" Составное число"<<"\n";
+	else std::cout <<a <<" Простое число"<<"\n";
+
+	
+}
+void RazlojOnMnojDrob(drob a)
+{
+	RazlojOnMnoj(a.chisl);
+	RazlojOnMnoj(a.znamenatel);
+}
+void primeDivisors(int n)
+{
+	int t, k;
+
+	std::cout << n << " = ";
+	if (n <= 1) std::cout << " " << n;
+	else t = ceill(sqrt(n));
+	k = 2;
+	while (k <= t)
+	{
+		if ((n % k) == 0)
+		{
+			n = n / k;
+			std::cout << " " << k;
+			while (n % k == 0)
+			{
+				n = n / k;
+				std::cout << " " << k;
+			}
+			t = ceill(sqrt(n));
+		}
+		k += 1;
+	}
+	// k >t -простых делителей меньше n уже нет
+	if (n>1) std::cout << " " << n<<" Простое число! "<<endl;
 }
 void main() 
 {
@@ -352,33 +439,74 @@ void main()
 		//"Ввод десятичной дроби МЕНЬШЕ 0 (0.025) через (.) для преобразования в нормальную дробь " << "\n" << endl;
 		std::cin >> decDrobA.zelview;
 		// проверка дроби > 0 ?
-		if (CheckDecDrobBigZeroIs(decDrobA))
-		{
-			TransformDecDrobBigZero(decDrobA); // Да
-			//ShowDrob(decDrobA);
-			//std::cin >> drobA.digitDrob;
-		}
-		else
+		//if (CheckDecDrobBigZeroIs(decDrobA))
+		//{
+		//	TransformDecDrobBigZero(decDrobA); // Да
+		//	/*if (!CheckNormalFraction(decDrobA))
+		//	{
+		//		NonNormalDrobInSmechannuy(decDrobA);
+		//		ShowDrob(smDrobA);
+		//	}*/
+
+		//	//ShowDrob(decDrobA);
+		//	//std::cin >> drobA.digitDrob;
+		//}
+		//else
 		std::cout << " \n";
-		smDrobA = TransformDecDrobMinZero(decDrobA); // Нет
+		//smDrobA = TransformDecDrobMinZero(decDrobA); // Нет
+		NonNormalDrobInSmechannuy(decDrobA);
 		ShowDrob(smDrobA);
-		if (CheckSokrDrob(smDrobA))
+		/*if (!CheckNormalFraction(smDrobA))
+		{
+			NonNormalDrobInSmechannuy(decDrobA);
+			ShowDrob(smDrobA);
+		}*/
+	/*	if (CheckSokrDrob(smDrobA))
 		{
 			std::cout << "Можно сократить (НОД != 1),сокращаю...\n" << endl;
 			std::wcout << "NOD = " << NOD(smDrobA.chisl, smDrobA.znamenatel) <<"\n"<< endl;
 			resultDrob = SokrDrob(smDrobA);
 			ShowDrob(resultDrob);
 		}
-		else std::cout << "Дробь нельзя сократить т.к НОД дроби = 1...\n" << endl;
+		else std::cout << "Дробь нельзя сократить т.к НОД дроби = 1...\n" << endl;*/
+
+		///*if (!CheckNormalFraction(decDrobA))
+		//{
+		//	NonNormalDrobInSmechannuy(decDrobA);
+		//	ShowDrob(smDrobA);
+		//}*/
+
 		std::cin >> decDrobA.zelview;
 	}
 
-	//if (formatDrobs == 2)
-	//{
-	//	
+	if (formatDrobs == 2)
+	{
+		
+		std::cout << "Ввод нормальной дроби " << "\n" << endl;
+		
+		std::cin >> drobA.chisl>>drobA.znamenatel;
+		
+		std::cout << endl;
 
+		//debug output
+		std::cout << " " << drobA.chisl << endl;
+		std::cout << " ---" << endl;
+		std::cout << " " << drobA.znamenatel << endl;
+		std::cout << "" << endl;
 
-	//}
+		
+
+		/*if (!CheckSokrDrob(drobA))
+		{
+			std::cout << "Число простое,его нельзя разложить!";
+		}
+		else*/
+		//RazlojOnMnojDrob(drobA);
+		primeDivisors(drobA.chisl);
+		std::cout << endl;
+		primeDivisors(drobA.znamenatel);
+		
+	}
 
 	//if (formatDrobs == 3)
 	//{
