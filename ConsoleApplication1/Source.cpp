@@ -505,16 +505,38 @@ void main()
 	std::cout << "Ввод смещанной дроби 2 2/3 [3]" << "\n" << endl;
 	std::cin >> formatDrobs>>operation;
 
-	if (formatDrobs == 2 && operation == 2 )
+	if (formatDrobs == 2 && operation == 2)
 	{
-      fraction.InputDrob();
-	  fraction.ShowDrob(fraction.drobA);
-	  fraction.ShowDrob(fraction.drobB);
-	  fraction.SummaDrobsPositive();
+		fraction.InputDrob();
+		
+
+		//общий знаменатель? да
+		if (fraction.CheckDrobObZnamenatel(fraction.drobA, fraction.drobB))
+		{
+         fraction.SummaDrobsPositive();
+
+		 //не нормальная дробь
+		 if (!fraction.CheckNormalFraction(fraction.smDrobA))
+		 {
+			 std::cout << "Выделяем целую часть из неправильной дроби..." << "\n"<<endl;
+			 //выделим целую часть из нее
+			 fraction.NonNormalDrobInSmechannuy();
+			 fraction.ShowDrob(fraction.smDrobA);
+
+			 //переведем в десятичную дробь
+			 //TransformDecDrobBigZero(fraction.smDrobA);
+		 }
+		}
+		else
+		{ 
+			//CreateObZnamenatel(fraction.drobA, fraction.drobB); 
+		}
+	 
 
 	  if (fraction.CheckSokrDrob(fraction.drobA)) { fraction.SokrDrob(fraction.drobA); }
 	  else
 	  {
+		  std::cout << "\n" << endl;
 		  std::cout << "Дробь не сокращается т.к НОД = 1" << endl;
 		  fraction.NonNormalDrobInSmechannuy();
 		  //fraction.ShowDrob(fraction.smDrobA);

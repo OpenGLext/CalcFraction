@@ -22,6 +22,7 @@ public:
 	};
 
 	drob drobA, drobB;
+	drob *drA, *drB;
 	SmDrob smDrobA;
 
 	void ShowDrob(drob a);
@@ -30,7 +31,10 @@ public:
 	void SummaDrobsPositive();
 	void InputDrob();
 	void Fraction::ShowDrob(SmDrob smDrobA);
-
+	void GetDrobA();
+	void  GetDrobB();
+	bool CheckNormalFraction(drob a);
+	bool CheckNormalFraction(SmDrob a);
 	/* -- перенести в прайвит -- */
 	bool CheckSokrDrob(drob a);
 	

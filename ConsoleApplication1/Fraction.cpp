@@ -19,7 +19,7 @@ void Fraction::InputDrob()
 			exit;
 		}
 
-		if (CheckNormalDrob(drobA))
+		if (!CheckNormalDrob(drobA))
 		{
 			std::cout << "Числитель больше знаменателя,переведем дробь в смешанную" << endl;
 			NonNormalDrobInSmechannuy();
@@ -31,7 +31,8 @@ void  Fraction::ShowDrob(SmDrob smDrobA)
 {
 		if (smDrobA.Natur >= 1 && smDrobA.znamenatel > 1 )
 	{
-	std::cout << "   " << smDrobA.chisl << "\n" << smDrobA.Natur << " ---" << "\n" << "   " << smDrobA.znamenatel << "\n" << endl;
+//	std::cout << smDrobA.chisl  << smDrobA.Natur<<" " << " ---" << "\n" << "   " << smDrobA.znamenatel << "\n" << endl;
+			std::cout << smDrobA.Natur << " " << smDrobA.chisl << "/" << smDrobA.znamenatel;
 	std::cout << "" << endl;
 	}
 	else
@@ -50,6 +51,18 @@ void Fraction::NonNormalDrobInSmechannuy()
 	smDrobA.Natur = drobA.chisl / drobA.znamenatel;
 	smDrobA.chisl = drobA.chisl % drobA.znamenatel;
 	smDrobA.znamenatel = drobA.znamenatel;
+}
+bool  Fraction::CheckNormalFraction(SmDrob a)
+{
+	if (a.Natur == 0)
+	{
+		if (a.chisl > a.znamenatel) return false;
+		if (a.chisl < a.znamenatel) return true;
+	}
+	if (a.Natur < 0) return false;
+	if (a.Natur > 0) return false;
+
+
 }
 void Fraction::ShowDrob(drob a)
 {
@@ -117,7 +130,7 @@ void Fraction::SummaDrobsPositive()
 	std::cout << "  +  ";
 	ShowDrob(drobB);
 	std::cout << "  =  ";
-	ShowDrob(summa);
+	
 
    drobA = summa;
 
@@ -134,4 +147,18 @@ bool Fraction::CheckSokrDrob(drob a)
 {
 	if (NOD(a.chisl, a.znamenatel) == 1) return false;
 	else return true;
+}
+void Fraction::GetDrobA()
+{
+
+}
+void Fraction::GetDrobB()
+{
+
+}
+bool Fraction::CheckNormalFraction(drob a)
+{
+	if (a.chisl > a.znamenatel) return false;
+	if (a.chisl < a.znamenatel) return true;
+
 }
