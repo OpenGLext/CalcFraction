@@ -27,6 +27,10 @@ void Fraction::InputDrob()
 		}
 	}
 }
+void Fraction::InputDrobSm(SmDrob a, SmDrob b)
+{
+	std::cin >> a.Natur >> a.chisl >> a.znamenatel >> b.Natur >> b.chisl >> b.znamenatel;
+}
 void  Fraction::ShowDrob(SmDrob smDrobA)
 {
 		if (smDrobA.Natur >= 1 && smDrobA.znamenatel > 1 )
@@ -41,9 +45,18 @@ void  Fraction::ShowDrob(SmDrob smDrobA)
 }
 void Fraction::NonNormalDrobInSmechannuy()
 {
+
+
 	/*поделить числитель дроби на ее знаменатель;
-	остаток от делени€ записать в числитель знаменатель оставить прежним;
-	результат от делени€ записать в качестве целой части.*/
+	+	остаток от делени€ записать в числитель знаменатель оставить прежним;
+	+	результат от делени€ записать в качестве целой части.*/
+	/*
+		smDrobA.chisl = resultDrob.chisl % resultDrob.znamenatel;
+	    smDrobA.znamenatel = resultDrob.znamenatel;
+	
+		smDrobA.Natur = resultDrob.chisl / resultDrob.znamenatel;
+	smDrobA.chisl = resultDrob.chisl % resultDrob.znamenatel;
+	smDrobA.znamenatel = resultDrob.znamenatel;*/
 
 	tmp.chisl = drobA.chisl % drobA.znamenatel;
 	tmp.znamenatel = drobA.znamenatel;
@@ -117,6 +130,11 @@ bool Fraction::CheckDrobObZnamenatel(drob drobA, drob drobB)
 	if (drobA.znamenatel == drobB.znamenatel) return true;
 	else return false;
 }
+bool Fraction::CheckDrobObZnamenatel(SmDrob a, SmDrob b)
+{
+	if (a.znamenatel == b.znamenatel) return true;
+	else return false;
+}
 void Fraction::SummaDrobsPositive()
 {
 	summa.chisl = drobA.chisl + drobB.chisl;
@@ -138,10 +156,10 @@ void Fraction::SummaDrobsPositive()
 void Fraction::SokrDrob(drob a)
 {
 	
-	tmp.chisl = a.chisl / (NOD(a.chisl, a.znamenatel))  ;
-	tmp.znamenatel =  a.znamenatel / (NOD(a.chisl, a.znamenatel));
+	tmpA.chisl = a.chisl / (NOD(a.chisl, a.znamenatel))  ;
+	tmpA.znamenatel =  a.znamenatel / (NOD(a.chisl, a.znamenatel));
 	
-	drobA = tmp;
+	drobA = tmpA;
 }
 bool Fraction::CheckSokrDrob(drob a)
 {
@@ -161,4 +179,66 @@ bool Fraction::CheckNormalFraction(drob a)
 	if (a.chisl > a.znamenatel) return false;
 	if (a.chisl < a.znamenatel) return true;
 
+}
+
+//сумма смещанных дробей результат в w
+void Fraction::SummaSmFractions(SmDrob a, SmDrob b)
+{
+	drob t, w, q;
+
+	t.chisl = 0; t.znamenatel = t.chisl;
+	w.chisl = t.chisl; w.znamenatel = t.chisl;
+	q.chisl = 0; q.znamenatel = 0;
+
+	t.chisl = (a.Natur * a.znamenatel) + a.chisl;
+	t.znamenatel = a.znamenatel;
+
+	q.chisl = (b.Natur * b.znamenatel) + b.chisl;
+	q.znamenatel = b.znamenatel;
+
+	if (CheckDrobObZnamenatel(t, q))
+	{
+		std::cout << "ƒроби с общим знаменателем" << "\n";
+		w.chisl = t.chisl + q.chisl;
+		w.znamenatel = t.znamenatel;
+		ShowDrob(w);
+		exit;
+
+	}
+	else
+	{
+		std::cout << "Ќайдем общий знаменатель..." << "\n";
+		CreateObZnamenatel(t, q);
+		t = tmpA; q = tmpB;
+		w.chisl = t.chisl + q.chisl;
+		w.znamenatel = t.znamenatel;
+		ShowDrob(w);
+		exit;
+	}
+
+
+}
+// создадим общий знаменатель результат в drobA->drobATemp drobB->drobBTemp
+void Fraction::CreateObZnamenatel(drob drobA, drob drobB)
+{
+	/***----- DrobA ------***/
+
+
+	std::cout << "ќбщий знаменатель " << NOKDrobs(drobA, drobB) << "\n";
+	std::cout << "Ќайден доп множитель " << (NOKDrobs(drobA, drobB) / drobA.znamenatel) << "\n";
+
+	drobA.chisl = (NOKDrobs(drobA, drobB) / drobA.znamenatel) * drobA.chisl;
+	drobA.znamenatel = NOKDrobs(drobA, drobB);
+
+	/***----- DrobB ------***/
+	std::cout << "Ќайден доп множитель " << (NOKDrobs(drobA, drobB) / drobB.znamenatel) << "\n" << endl;
+	drobB.chisl = (NOKDrobs(drobA, drobB) / drobB.znamenatel) * drobB.chisl;
+	drobB.znamenatel = NOKDrobs(drobA, drobB);
+
+
+	tmpA = drobA; tmpB = drobB;
+
+	ShowDrob(drobA);
+
+	ShowDrob(drobB);
 }

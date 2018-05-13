@@ -23,13 +23,16 @@ public:
 
 	drob drobA, drobB;
 	drob *drA, *drB;
-	SmDrob smDrobA;
+	SmDrob smDrobA,smDrobB;
 
 	void ShowDrob(drob a);
 
 	bool CheckDrobObZnamenatel(drob drobA, drob drobB);
+	bool CheckDrobObZnamenatel(SmDrob a, SmDrob b);
 	void SummaDrobsPositive();
+	void SummaSmFractions(SmDrob a, SmDrob b);
 	void InputDrob();
+	void InputDrobSm(SmDrob a, SmDrob b);
 	void Fraction::ShowDrob(SmDrob smDrobA);
 	void GetDrobA();
 	void  GetDrobB();
@@ -37,6 +40,7 @@ public:
 	bool CheckNormalFraction(SmDrob a);
 	/* -- перенести в прайвит -- */
 	bool CheckSokrDrob(drob a);
+	void CreateObZnamenatel(drob drobA, drob drobB);
 	
 	void SokrDrob(drob a);
 	void NonNormalDrobInSmechannuy();
@@ -44,8 +48,9 @@ public:
 
 private:
 
-	drob tmp;
+	drob tmpA,tmpB,tmp;
 	drob summa;
+	drob w, t, q;
 
 	// наименьший общий делитель
 	int NOD(int a, int b);

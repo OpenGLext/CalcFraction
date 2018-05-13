@@ -483,6 +483,155 @@ void RazlojOnMnojFloat(DecDrob a)
 		//primeDivisors(a.zelview);
 	}
 }
+void OutDisplayInfo()
+{
+	std::cout << "Ввод дроби через пробел..." << endl;
+	std::cout << " " << endl;
+	std::cout << "Ввод десятичной дроби 2,3  [1]" << "\n" << endl;
+	std::cout << "Ввод нормальной дроби 2/3  [2]" << "\n" << endl;
+	std::cout << "Ввод смещанной дроби 2 2/3 [3]" << "\n" << endl;
+	
+}
+void InputDataAndAnalyzeFormatData()
+{
+  std::cin >> formatDrobs >> operation;
+
+  
+       // норм дробь - сумма дробей. опер = 2 --> +
+  if (formatDrobs == 2 && operation == 2)
+  {
+	  fraction.InputDrob();
+
+
+	  //общий знаменатель? да
+	  if (fraction.CheckDrobObZnamenatel(fraction.drobA, fraction.drobB))
+	  {
+		  fraction.SummaDrobsPositive();
+
+		  //не нормальная дробь
+		  if (!fraction.CheckNormalFraction(fraction.smDrobA))
+		  {
+			  std::cout << "Выделяем целую часть из неправильной дроби..." << "\n" << endl;
+			  //выделим целую часть из нее
+			  fraction.NonNormalDrobInSmechannuy();
+			  fraction.ShowDrob(fraction.smDrobA);
+
+			  //переведем в десятичную дробь
+			  //TransformDecDrobBigZero(fraction.smDrobA);
+		  }
+	  }
+	  else
+	  {
+		  //CreateObZnamenatel(fraction.drobA, fraction.drobB); 
+	  }
+
+
+	  if (fraction.CheckSokrDrob(fraction.drobA)) { fraction.SokrDrob(fraction.drobA); }
+	  else
+	  {
+		  std::cout << "\n" << endl;
+		  std::cout << "Дробь не сокращается т.к НОД = 1" << endl;
+		  fraction.NonNormalDrobInSmechannuy();
+		  //fraction.ShowDrob(fraction.smDrobA);
+	  }
+	  // fraction.ShowDrob(fraction.drobA);
+	  fraction.InputDrob();
+  }
+  
+  // смещанная дробь
+  if (formatDrobs == 3 && operation == 2)
+  {
+	  // enter fractions
+
+	  fraction.InputDrobSm(fraction.smDrobA,fraction.smDrobB);
+
+	  //общий знаменатель? да
+	  if (fraction.CheckDrobObZnamenatel(fraction.smDrobA, fraction.smDrobB))
+	  {
+		  fraction.SummaSmFractions(fraction.smDrobA, fraction.smDrobB);
+		 
+		 
+
+		  //не нормальная дробь
+		  if (!fraction.CheckNormalFraction(fraction.smDrobA))
+		  {
+			  std::cout << "Выделяем целую часть из неправильной дроби..." << "\n" << endl;
+			  //выделим целую часть из нее
+			  fraction.NonNormalDrobInSmechannuy();
+			  fraction.ShowDrob(fraction.smDrobA);
+
+			  //переведем в десятичную дробь
+			  //TransformDecDrobBigZero(fraction.smDrobA);
+		  }
+	  }
+	  else
+	  {
+		  //CreateObZnamenatel(fraction.drobA, fraction.drobB); 
+	  }
+
+
+	  if (fraction.CheckSokrDrob(fraction.drobA)) { fraction.SokrDrob(fraction.drobA); }
+	  else
+	  {
+		  std::cout << "\n" << endl;
+		  std::cout << "Дробь не сокращается т.к НОД = 1" << endl;
+		  fraction.NonNormalDrobInSmechannuy();
+		  //fraction.ShowDrob(fraction.smDrobA);
+	  }
+	  // fraction.ShowDrob(fraction.drobA);
+	  fraction.InputDrob();
+
+	 
+	 // ShowDrob(smDrobA); ShowDrob(smDrobB);
+	//  fraction.ShowDrob(fraction.smDrobA);
+	 // fraction.ShowDrob(fraction.smDrobB);
+	 // std::cout << "Enter operation [1] + [2] - [3] * [4] / " << "\n"; std::cin >> operation;
+
+
+
+	  //switch (operation)
+	  //{
+	  //case 1:
+		 // if (CheckDrobObZnamenatel(drobA, drobB)) std::cout << "Дроби с общим знаменателем" << endl;
+		 // else CreateObZnamenatel(drobA, drobB);
+
+		 // drobA = SummaSmFractions(smDrobA, smDrobB);
+
+		 // if (CheckNormalDrob(drobA)) std::cout << "Дробь правильная,не требуется перевод в смешанную" << "\n";
+		 // else
+		 // {
+			//  std::cout << "Дробь не правильная,создадим смещанную" << "\n" << endl;
+			//  NonNormalDrobInSmechannuy(drobA);
+			//  ShowDrob(smDrobA);
+		 // }
+
+		 // if (CheckSokrDrob(drobA))
+		 // {
+			//  std::cout << "Сокращаем дробь..." << "\n";
+			//  SokrDrob(drobA);
+			//  ShowDrob(resultDrob);
+		 // }
+		 // else std::cout << "Дробь нельзя сократить" << "\n";
+
+		 // ShowDrob(drobA);
+
+
+		 // break;
+
+	  //case 2: break;
+	  //case 3: break;
+	  //case 4: break;
+	  //}
+
+  }
+
+
+  // десятичная дробь
+
+
+
+}
+
 
 void main() 
 {
@@ -498,52 +647,51 @@ void main()
 
 	setlocale(LC_ALL, "Russian");
 
-	std::cout << "Ввод дроби через пробел..." << endl;
-	std::cout << " " << endl;
-	std::cout << "Ввод десятичной дроби 2,3  [1]" << "\n" << endl;
-	std::cout << "Ввод нормальной дроби 2/3  [2]" << "\n" << endl;
-	std::cout << "Ввод смещанной дроби 2 2/3 [3]" << "\n" << endl;
-	std::cin >> formatDrobs>>operation;
+	  //out display info
+	  OutDisplayInfo();
 
-	if (formatDrobs == 2 && operation == 2)
-	{
-		fraction.InputDrob();
-		
+	  //input data and analyze formats data
+	  InputDataAndAnalyzeFormatData();
 
-		//общий знаменатель? да
-		if (fraction.CheckDrobObZnamenatel(fraction.drobA, fraction.drobB))
-		{
-         fraction.SummaDrobsPositive();
+	//if (formatDrobs == 2 && operation == 2)
+	//{
+	//	fraction.InputDrob();
+	//	
 
-		 //не нормальная дробь
-		 if (!fraction.CheckNormalFraction(fraction.smDrobA))
-		 {
-			 std::cout << "Выделяем целую часть из неправильной дроби..." << "\n"<<endl;
-			 //выделим целую часть из нее
-			 fraction.NonNormalDrobInSmechannuy();
-			 fraction.ShowDrob(fraction.smDrobA);
+	//	//общий знаменатель? да
+	//	if (fraction.CheckDrobObZnamenatel(fraction.drobA, fraction.drobB))
+	//	{
+ //        fraction.SummaDrobsPositive();
 
-			 //переведем в десятичную дробь
-			 //TransformDecDrobBigZero(fraction.smDrobA);
-		 }
-		}
-		else
-		{ 
-			//CreateObZnamenatel(fraction.drobA, fraction.drobB); 
-		}
-	 
+	//	 //не нормальная дробь
+	//	 if (!fraction.CheckNormalFraction(fraction.smDrobA))
+	//	 {
+	//		 std::cout << "Выделяем целую часть из неправильной дроби..." << "\n"<<endl;
+	//		 //выделим целую часть из нее
+	//		 fraction.NonNormalDrobInSmechannuy();
+	//		 fraction.ShowDrob(fraction.smDrobA);
 
-	  if (fraction.CheckSokrDrob(fraction.drobA)) { fraction.SokrDrob(fraction.drobA); }
-	  else
-	  {
-		  std::cout << "\n" << endl;
-		  std::cout << "Дробь не сокращается т.к НОД = 1" << endl;
-		  fraction.NonNormalDrobInSmechannuy();
-		  //fraction.ShowDrob(fraction.smDrobA);
-	  }
-	 // fraction.ShowDrob(fraction.drobA);
-	  fraction.InputDrob();
-	}
+	//		 //переведем в десятичную дробь
+	//		 //TransformDecDrobBigZero(fraction.smDrobA);
+	//	 }
+	//	}
+	//	else
+	//	{ 
+	//		//CreateObZnamenatel(fraction.drobA, fraction.drobB); 
+	//	}
+	// 
+
+	//  if (fraction.CheckSokrDrob(fraction.drobA)) { fraction.SokrDrob(fraction.drobA); }
+	//  else
+	//  {
+	//	  std::cout << "\n" << endl;
+	//	  std::cout << "Дробь не сокращается т.к НОД = 1" << endl;
+	//	  fraction.NonNormalDrobInSmechannuy();
+	//	  //fraction.ShowDrob(fraction.smDrobA);
+	//  }
+	// // fraction.ShowDrob(fraction.drobA);
+	//  fraction.InputDrob();
+	//}
 	
 
 	//if (formatDrobs == 1)
