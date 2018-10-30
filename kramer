@@ -1,0 +1,476 @@
+// MethodKramera.cpp: определяет точку входа для консольного приложения.
+//
+
+#include "stdafx.h"
+#include <iostream>
+#include <string>
+#include "Fraction.h"
+
+
+using namespace std;
+
+Fraction frac;
+
+
+struct indexMatrix
+{
+	int a;
+	int b;
+
+};
+
+float det[4];
+float vec[4];
+float vecX[2];
+float tmpVec[2];
+
+float det3x3[8],detOne3x3[8],detTwo3x3[8],detThree3x3[8];
+float newmatrix[14];
+float advDiag[2];
+float subMainDiag[2];
+float transMatrix[8];
+float dcopy[8];
+int selMAtrix;
+float opredel;
+int i;
+float deltax, delta, deltay,deltaz;
+float x, y, z;
+float tr;
+float MatMinor3x3[8];
+float MatMinor2x2[3];
+
+
+//умножим матрицу на вектор ---> на выходе вектор tmpVec
+void MultyMatrixOnVector(float *d, float *v)
+{
+	  tmpVec[0] = (( d[0] * v[0] ) + ( d[3] * v[1]) + (d[6] * v[2]) );
+	  tmpVec[1] = (( d[1] * v[0] ) + ( d[4] * v[1]) + (d[7] * v[2]) );
+	  tmpVec[2] = (( d[2] * v[0] ) + ( d[5] * v[1]) + (d[8] * v[2]) );
+
+}
+float Determinant2x2(float *det)
+{
+	//det[3] = 0;
+	return ((det[0]*det[3]) - (det[1]*det[2]));
+
+}
+float Determinant2x2Index(float *det, int indx,indexMatrix indOne,indexMatrix indTwo)
+{
+	return det[indx] = (det[indOne.a] * det[indOne.b]) - ( det[indTwo.a] * det[indTwo.b]);
+}
+float Determinant3x3(float *det)
+{
+	return (det3x3[0] * det3x3[4] * det3x3[8]) +
+		   (det3x3[6] * det3x3[1] * det3x3[5]) +
+		   (det3x3[3] * det3x3[7] * det3x3[2]) -
+		   (det3x3[6] * det3x3[4] * det3x3[2]) -
+		   (det3x3[0] * det3x3[7] * det3x3[5]) -
+		   (det3x3[3] * det3x3[1] * det3x3[8]);
+}
+float DetOne(float *detOne3x3)
+{
+	return 0.0f; //(detOne3x3);
+}
+float GetDeltaX(float *det)
+{
+	return (vec[0]*det[3]) - (vec[1]*det[2]);
+}
+float  GetDeltaY(float *det)
+{
+	return (vec[1]*det[0]) - (vec[0] * det[1]) ;
+}
+void TransportMatrix(float *det, float *transMatrix)
+{
+    transMatrix[0] = det[0];
+	transMatrix[1] = det[3];
+	transMatrix[2] = det[6];
+	transMatrix[3] = det[1];
+	transMatrix[4] = det[4];
+	transMatrix[5] = det[7];
+	transMatrix[6] = det[2];
+	transMatrix[7] = det[5];
+	transMatrix[8] = det[8];
+}
+void PrintMatrix(float *det)
+{
+	std::cout << endl;
+  std::cout << "|   "<< det[0]<<" "<<" "<<" "<<det[3]<<" "<<" "<<" "<<det[6]<<"|"<<endl;
+  std::cout << "|  "<< det[1]<< " "<<" "<<" "<<det[4]<< " "<<" "<<" "<<det[7]<<"|"<<endl;
+  std::cout << "|   "<< det[2]<< " " << " " << det[5] << " " << " " <<" "<< det[8] << "|" << endl;
+  std::cout << endl;
+}
+void PrintVector(float *v)
+{
+	std::cout << endl;
+	std::cout << "|   " <<  v[0]   << "|" << endl;
+	std::cout << "|  "  <<  v[1]   << "|" << endl;
+	std::cout << "|   " <<  v[3]   << "|" << endl;
+	std::cout << endl;
+}
+float TriangleMethodDelta(float *d)
+{
+
+	 return ( 
+		    d[2]*d[3]*d[8] +
+		    d[5]*d[1]*d[6] -
+		    d[0]*d[5]*d[7] -
+		    d[8]*d[3]*d[1] );
+ 
+}
+float MainDiagonal(float *d)
+{
+	return d[0] * d[4] * d[8];
+}
+void MainSubDiagonals(float *d)
+{
+	subMainDiag[0] =  d[0] * d[4] * d[8];
+	subMainDiag[1] =  d[1] * d[5] * d[6];
+	subMainDiag[2] =  d[2] * d[3] * d[7];
+}
+float AdvDiagonal(float *d)
+{
+	 return -(d[2]*d[4]*d[6]);
+
+}
+void AdvDiagonalSaveDiagonals(float *d)
+{
+	advDiag[0] = (d[2] * d[4] * d[6]);
+	advDiag[1] = (d[0] * d[5] * d[7]);
+	advDiag[2] = (d[1] * d[3] * d[8]);
+
+	
+}
+float SubFunctionDeterminant(float *d)
+{
+	return (d[1] * d[5] * d[11]) +
+		(d[2] * d[10] * d[14]) -
+		(d[9] * d[5] * d[7]) -
+		(d[12] * d[10] * d[8]);
+}
+float Determinant(float *d)
+{
+	float dd = 0; float dd_ = 0; float dd3 = 0;
+	
+
+	for (int i = 0; i < 9; i++)
+	{
+		newmatrix[i] = d[i];
+	}
+
+	//add two strings
+
+	newmatrix[9] = d[0]; newmatrix[10] = d[3]; newmatrix[11] = d[6];
+	newmatrix[12] = d[1]; newmatrix[13] = d[4]; newmatrix[14] = d[7];
+
+	dd = MainDiagonal(d);
+	dd_ = -AdvDiagonal(d);
+	//dd_ = CheckSign(dd_);
+	dd3 = -SubFunctionDeterminant(newmatrix);
+	//dd3 = CheckSign(dd3);
+	dd = (dd + (-dd_) - dd3);
+		  
+
+	
+	return dd;
+}
+float TriangleMulty(float a, float b, float c)
+{
+	return a * b*c;
+}
+float CalcSubAddDiagonal(float *d)
+{
+	i =  TriangleMulty(d[0], d[5], d[7]);
+	tr = TriangleMulty(d[1], d[3], d[8]);
+
+	return (-i) + (-tr);
+	// неверный знак после TriangleMulty
+}
+float  CheckSign(float a)
+{
+	if ((a == 0) || (a == -0)) return 0;
+	if (a < 0) return abs(a);
+	if (a > 0) return -a;
+}
+float MethodLineDelta(float *d)
+{
+	float m,n,tr;
+	
+	MainSubDiagonals(d);
+
+	m = subMainDiag[0] + subMainDiag[1] + subMainDiag[2];
+
+	AdvDiagonalSaveDiagonals(d);
+
+	m = m + CheckSign(advDiag[0]) + CheckSign(advDiag[1]) + CheckSign(advDiag[2]);
+	
+
+	return m;
+}
+void AddVectorToMatrix(float *d)
+{
+	
+	float m, n;
+	
+
+	for  (int i = 0;  i < 9;  i++)
+	{
+		dcopy[i] = d[i];
+	}
+
+	//add first row
+	
+    d[0] = vec[0];
+	d[1] = vec[1];
+	d[2] = vec[2];
+
+	PrintMatrix(d);
+
+
+	deltax = MethodLineDelta(d);
+
+    d[0] = dcopy[0]; d[1] = dcopy[1]; d[2] = dcopy[2];
+	d[3] = vec[0]; d[4] = vec[1]; d[5] = vec[2];
+
+	PrintMatrix(d);
+
+
+	deltay = MethodLineDelta(d);
+
+	//add 3 row
+	d[3] = dcopy[3]; d[4] = dcopy[4]; d[5] = dcopy[5];
+	d[6] = vec[0]; d[7] = vec[1]; d[8] = vec[2];
+
+	PrintMatrix(d);
+
+
+	deltaz = MethodLineDelta(d);
+
+}
+void SearchMatrixMinor(float *det3x3)
+{
+	float det=0;
+
+
+	det = Determinant3x3(det3x3);
+	if ( det != 0) { std::cout << "Determinant not zero" << endl;
+	std::cout << det << endl;}
+
+	MatMinor3x3[0] = ( det3x3[4] * det3x3[8] ) - ( det3x3[5]*det3x3[7] );
+	MatMinor3x3[3] = (det3x3[1] * det3x3[8]) - (det3x3[2] * det3x3[7]);
+	MatMinor3x3[6] = (det3x3[1] * det3x3[5]) - (det3x3[2] * det3x3[4]);
+	MatMinor3x3[1] = (det3x3[3] * det3x3[8]) - (det3x3[5] * det3x3[6]);
+	MatMinor3x3[4] = (det3x3[0] * det3x3[8]) - (det3x3[2] * det3x3[6]);
+	MatMinor3x3[7] = (det3x3[0] * det3x3[5]) - (det3x3[2] * det3x3[3]);
+	MatMinor3x3[2] = (det3x3[3] * det3x3[7]) - (det3x3[4] * det3x3[6]);
+	MatMinor3x3[5] = (det3x3[0] * det3x3[7]) - (det3x3[1] * det3x3[6]);
+	MatMinor3x3[8] = (det3x3[0] * det3x3[4]) - (det3x3[1] * det3x3[3]);
+	//Display MinorMatrix
+	std::cout << "Матрица миноров " << endl;
+	PrintMatrix(MatMinor3x3);
+
+	//сменим знаки
+	MatMinor3x3[3] = CheckSign(MatMinor3x3[3]); 
+	MatMinor3x3[1] = CheckSign(MatMinor3x3[1]);
+	MatMinor3x3[5] = CheckSign(MatMinor3x3[5]);
+	MatMinor3x3[7] = CheckSign(MatMinor3x3[7]);
+	std::cout << "Матрица алгебр.дополнений" << endl;
+	PrintMatrix(MatMinor3x3);
+
+	//транспонируем матрицу
+	TransportMatrix(MatMinor3x3, transMatrix);
+	std::cout << "Транспонированная матрица алгеб.дополнений" << endl;
+	PrintMatrix(transMatrix);
+
+	//получим корни
+	MultyMatrixOnVector(transMatrix, vec);
+	std::cout << "Корни A = 1/det A * mat * vec " << endl;
+	std::cout << "Вектор " << endl;
+	PrintVector(tmpVec);
+
+	std::cout << " x = " << "(1/" << abs(det) << ")*" << tmpVec[0] << endl;
+	std::cout << " y =  " << "(1/" << abs(det) << ")*" << tmpVec[1] << endl;
+	std::cout << " z = " <<"(1/"<< abs(det)<<")*"<<tmpVec[2]<<endl;
+
+	std::cout << " x = " << ((1/det)*tmpVec[0])<< " y =  "<<(1/det)*tmpVec[1] <<" z = "<<
+		                   (1/det)*tmpVec[2]<< endl;
+
+
+}
+void MethodInvertMatrix2x2(float *d)
+{
+	//if (Determinant2x2(d) == 0) { std::cout << "Обратной матрицы НЕТ" << endl; }
+//	else
+		//SearchMatrixMinor();
+	//SearchAdvMatrix();
+	//TransportMatrix();
+}
+
+int main()
+{
+	setlocale(LC_ALL, "Russian");
+
+	/* debug data 2x2  */
+	det[0] = 0; det[1] = 0; det[2] = 0; det[3] = 0;
+	//vec[0] = 2; vec[1] = 9; vec[2] = 17; vec[3] = 0;
+	vec[0] = 2; vec[1] = 9; vec[2] = 17; vec[3] = 0;
+
+
+	/* debug data 3x3 */
+	/*det3x3[0] = 2;
+	det3x3[1] = 2; 
+	det3x3[2] = 6;
+
+	det3x3[3] = -3;
+	det3x3[4] = 1;
+	det3x3[5] = -5;
+
+	det3x3[6] = 1;
+	det3x3[7] = -4;
+	det3x3[8] = 2;*/
+
+	//other matrix
+	det3x3[0] = 2;
+	det3x3[1] = 2;
+	det3x3[2] = 6;
+	det3x3[3] = -3;
+	det3x3[4] = 1;
+	det3x3[5] = -5;
+	det3x3[6] = 1;
+	det3x3[7] = -4;
+	det3x3[8] = 2;
+	std::cout << "Решение СЛАУ"<<endl<< "Метод Крамера матрица 2х2х [1];"<<endl<< "матрица 3х3 [2];"<<endl<<"метод обратной матрицы - матрица 3х3 [3] " << endl;
+	
+	//std::cout << "Выбор Матрицы 2х2 - [1] 3x3 - [2] " << endl;
+	std::cin >> selMAtrix;
+	//selMAtrix = 2;
+	//PrintMatrix(transMatrix);
+
+	if (selMAtrix == 1) 
+	{
+		selMAtrix = 0;
+		std::cout << "Ввод матрицы.Ввод сверху вниз по столбцам.Пустые значения ,ввести 0 " << endl;
+
+		for (i=0; i < 4; i++)
+		{
+			std::cout << "Matrix[" <<i<<"] = ";
+			std::cin >> det[i];
+		}
+		
+		std::cout << "Ввод вектора " << endl;
+		for  (i = 0; i < 4; i++)
+		{
+			std::cout << "Vect[" << i << "] = ";
+			std::cin >> vec[i];
+		}
+
+		//det[0] = 7; det[1] = -5; det[2] = 1; det[3] = 3;
+		//vec[0] = 23; vec[1] = 1; vec[2] = 0; vec[3] = 0;
+
+		  
+
+		opredel = Determinant2x2(det);
+		std::cout << "Определитель матрицы = "<<opredel << endl;
+		if (opredel != 0)
+		{ 
+			std::cout << "Есть единственное решение - можно решить методом Крамера" << endl;
+
+         
+			  std::cin >> i;
+		}
+		else if (opredel < 0) { std::cout << "Нет единственного решения - можно решить методом Гаусса" << endl; }
+		
+	}
+
+	if (selMAtrix == 2)
+	{
+		std::cout << "Ввод матрицы.Ввод сверху вниз по столбцам.Пустые значения = 0 " << endl;
+
+		for (i = 0; i < 9; i++)
+		{
+			std::cout << "Matrix[" << i << "] = ";
+			std::cin >> det3x3[i];
+		}
+		std::cout << "Ввод вектора " << endl;
+		for (i = 0; i < 3; i++)
+		{
+			std::cout << "Vect[" << i << "] = ";
+			std::cin >> vec[i];
+		}
+
+		PrintMatrix(det3x3);
+		//TransportMatrix(det3x3, transMatrix);
+		delta = Determinant(det3x3);
+		//delta = Determinant(det3x3);
+		std::cout << "det|A| = " << delta << endl;
+		std::cout << "det|A| != 0  значит, система имеет единственное решение " << endl;
+		AddVectorToMatrix(det3x3);
+		std::cout << "deltaX = " << deltax << endl;
+		std::cout << "deltaY = " << deltay << endl;
+		std::cout << "deltaZ = " << deltaz << endl;
+		std::cout << "" << endl;
+
+		if ((int)deltax % (int)delta != 0)
+		{
+			//std::cout << "x = deltaX / delta "<<deltax<<" / "<<delta<< endl; 
+
+			frac.AddDrob(deltax, delta);
+			if (frac.CheckSokrDrob(frac.drobA))
+			{
+				frac.SokrDrob(frac.drobA);
+				std::cout << "x = deltaX / delta ";
+				frac.ShowDrob(frac.drobA);
+			}
+		}
+		else std::cout << "x = (deltaX / delta) " << deltax / delta << endl;
+
+		if ((int)deltay % (int)delta != 0)
+		{
+			frac.AddDrob(deltay, delta);
+			if (frac.CheckSokrDrob(frac.drobA))
+			{
+				frac.SokrDrob(frac.drobA);
+				std::cout << "y = deltaY / delta ";
+				frac.ShowDrob(frac.drobA);
+			}
+		}
+		else std::cout << "y = (deltaY / delta) " << deltay / delta << endl;
+
+		if ((int)deltaz % (int)delta != 0)
+		{
+			frac.AddDrob(deltaz, delta);
+			if (frac.CheckSokrDrob(frac.drobA))
+			{
+				frac.SokrDrob(frac.drobA);
+				std::cout << endl << "z = deltaZ / delta ";
+				frac.ShowDrob(frac.drobA);
+			}
+		}
+		else std::cout << "z = (deltaz / delta) " << deltaz / delta << endl;
+
+		std::cin >> selMAtrix;
+	}
+
+	   // Матричный метод.вычисление обратной матрицы
+	if (selMAtrix == 3)
+	{
+		std::cout << "Ввод матрицы.Ввод сверху вниз по столбцам.Пустые значения = 0 " << endl;
+
+		for (i = 0; i < 9; i++)
+		{
+			std::cout << "Matrix[" << i << "] = ";
+			std::cin >> det3x3[i];
+		}
+		std::cout << "Ввод вектора " << endl;
+		for (i = 0; i < 3; i++)
+		{
+			std::cout << "Vect[" << i << "] = ";
+			std::cin >> vec[i];
+		}
+		SearchMatrixMinor(det3x3);
+		std::cin >> selMAtrix;
+	}
+        return 0;
+	}
+	
+
+
